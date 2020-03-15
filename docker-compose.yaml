@@ -4,8 +4,18 @@ services:
     build: .
     environment:
       - TCP_ADDRESSES=nsqd:4150
+      - TOPIC=nsq_topic
     depends_on:
       - nsqd
+    command: python app/consumer.py
+  publisher:
+    build: .
+    environment:
+      - TCP_ADDRESSES=nsqd:4150
+      - TOPIC=nsq_topic
+    depends_on:
+        - nsqd
+    command: python app/publisher.py
   nsqlookupd:
     image: nsqio/nsq
     command: /nsqlookupd
